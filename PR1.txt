@@ -1,0 +1,50 @@
+# Practical No. 1: Library Book Borrowing Records
+
+n = int(input("Enter total number of library members: "))
+
+borrowed = []
+for i in range(n):
+    while True:
+        count = int(input("Enter books borrowed by member " + str(i + 1) + ": "))
+        if count >= 0:
+            borrowed.append(count)
+            break
+        print("Invalid input. Count cannot be negative.")
+
+# Total and average
+total = sum(borrowed)
+average = total / n
+
+# Highest and lowest
+highest = max(borrowed)
+lowest = min(borrowed)
+
+# Members who borrowed no books
+zero_count = 0
+for c in borrowed:
+    if c == 0:
+        zero_count += 1
+
+# Frequency dictionary and mode
+frequency = {}
+for c in borrowed:
+    if c in frequency:
+        frequency[c] += 1
+    else:
+        frequency[c] = 1
+
+max_frequency = max(frequency.values())
+modes = []
+for key in frequency:
+    if frequency[key] == max_frequency:
+        modes.append(key)
+
+print("\n----- LIBRARY BORROWING REPORT -----")
+print("Borrowing records   :", borrowed)
+print("Total books borrowed :", total)
+print("Average books borrowed: %.2f" % average)
+print("Highest borrowed    :", highest)
+print("Lowest borrowed     :", lowest)
+print("Members with 0 books :", zero_count)
+print("Frequency of counts :", frequency)
+print("Most frequent count :", modes, "(occurs", max_frequency, "times)")

@@ -1,0 +1,83 @@
+SIZE = 10
+EMPTY = None
+DELETED = "DELETED"
+table = [EMPTY] * SIZE
+
+def hash_function(key):
+    return key % SIZE
+
+
+def find_index(key):
+    index = hash_function(key)
+    start = index
+    while table[index] is not EMPTY:
+        if table[index] == key:
+            return index
+        index = (index + 1) % SIZE
+        if index == start:
+            break
+    return -1
+
+
+def insert(key):
+    if find_index(key) != -1:
+        print("Key", key, "already exists in the table.")
+        return
+
+    index = hash_function(key)
+    start = index
+    while table[index] is not EMPTY and table[index] != DELETED:
+        print("Collision at index", index, "for key", key)
+        index = (index + 1) % SIZE
+        if index == start:
+            print("Hash table is full. Cannot insert", key)
+            return
+
+    table[index] = key
+    print("Key", key, "inserted at index", index)
+
+
+def search(key):
+    index = find_index(key)
+    if index != -1:
+        print("Key", key, "Found at index", index)
+    else:
+        print("Key", key, "Not Found")
+
+
+def delete(key):
+    index = find_index(key)
+    if index != -1:
+        table[index] = DELETED
+        print("Key", key, "deleted from index", index)
+    else:
+        print("Key", key, "Not Found")
+
+
+def display():
+    print("\nIndex   Key")
+    print("------------")
+    for i in range(SIZE):
+        value = table[i] if table[i] is not EMPTY else "-"
+        print("%-7d %s" % (i, value))
+
+
+print("===== HASH TABLE (size = " + str(SIZE) + ", h(key) = key mod " + str(SIZE) + ") =====")
+
+while True:
+    print("\n1. Insert 2. Search 3. Delete 4. Display 5. Exit")
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        insert(int(input("Enter key to insert: ")))
+    elif choice == 2:
+        search(int(input("Enter key to search: ")))
+    elif choice == 3:
+        delete(int(input("Enter key to delete: ")))
+    elif choice == 4:
+        display()
+    elif choice == 5:
+        print("Program terminated.")
+        break
+    else:
+        print("Invalid choice.")

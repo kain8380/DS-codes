@@ -1,0 +1,62 @@
+# Practical No. 3: Call Center Queue (FIFO)
+
+class CallQueue:
+    def __init__(self):
+        self.calls = []
+
+    def add_call(self, customer_id, call_time):
+        self.calls.append((customer_id, call_time))
+        print("Call added: Customer ID", customer_id, "at", call_time)
+
+    def answer_call(self):
+        if self.is_queue_empty():
+            print("Queue is empty. No call to answer.")
+        else:
+            customer_id, call_time = self.calls.pop(0)
+            print("Answering call of Customer ID", customer_id, "(received at", call_time + ")")
+
+    def view_queue(self):
+        if self.is_queue_empty():
+            print("Queue is empty.")
+        else:
+            print("\nWaiting calls (front -> rear):")
+            print("%-5s %-12s %-10s" % ("No.", "Customer ID", "Call Time"))
+            for i, (cid, t) in enumerate(self.calls, start=1):
+                print("%-5d %-12d %-10s" % (i, cid, t))
+
+    def is_queue_empty(self):
+        return len(self.calls) == 0
+
+
+queue = CallQueue()
+print("===== CALL CENTER QUEUE SYSTEM =====")
+
+while True:
+    print("\n----- MENU -----")
+    print("1. Add incoming call")
+    print("2. Answer call")
+    print("3. View queue")
+    print("4. Is queue empty?")
+    print("5. Exit")
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        cid = int(input("Enter customer ID: "))
+        t = input("Enter call time (HH:MM): ")
+        queue.add_call(cid, t)
+
+    elif choice == 2:
+        queue.answer_call()
+
+    elif choice == 3:
+        queue.view_queue()
+
+    elif choice == 4:
+        print("Queue is empty." if queue.is_queue_empty() else "Queue is not empty.")
+
+    elif choice == 5:
+        print("Exiting call center system.")
+        break
+
+    else:
+        print("Invalid choice.")
