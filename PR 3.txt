@@ -1,0 +1,47 @@
+from collections import deque
+
+call_queue = deque()
+
+
+def addCall(customer_id, call_time):
+    call_queue.append((customer_id, call_time))
+    print(f"Call added: Customer ID {customer_id}, Call Time {call_time}")
+
+
+def answerCall():
+    if not call_queue:
+        print("Queue is empty. No calls to answer.")
+    else:
+        customer_id, call_time = call_queue.popleft()
+        print(f"Answered call: Customer ID {customer_id}, Call Time {call_time}")
+
+
+def viewQueue():
+    if not call_queue:
+        print("Queue is empty.")
+    else:
+        print("Calls in queue (front to rear):")
+        for customer_id, call_time in call_queue:
+            print(f"Customer ID: {customer_id}, Call Time: {call_time}")
+
+
+def isQueueEmpty():
+    if not call_queue:
+        print("Queue is empty: True")
+        return True
+    print("Queue is empty: False")
+    return False
+
+
+# Main program
+addCall(101, "10:00 AM")
+addCall(102, "10:05 AM")
+addCall(103, "10:10 AM")
+
+viewQueue()
+answerCall()
+viewQueue()
+isQueueEmpty()
+answerCall()
+answerCall()
+isQueueEmpty()
