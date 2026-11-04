@@ -1,0 +1,73 @@
+from collections import deque
+
+# Vertices and routes of the undirected graph
+vertices = ['A', 'B', 'C', 'D', 'E', 'F']
+edges = [('A', 'B'), ('A', 'C'), ('B', 'D'),
+         ('B', 'E'), ('C', 'F'), ('E', 'F')]
+
+# Create an adjacency list
+adj_list = {v: [] for v in vertices}
+for u, v in edges:
+    adj_list[u].append(v)
+    adj_list[v].append(u)
+
+# Create an adjacency matrix
+n = len(vertices)
+adj_matrix = [[0] * n for _ in range(n)]
+index = {v: i for i, v in enumerate(vertices)}
+
+for u, v in edges:
+    i, j = index[u], index[v]
+    adj_matrix[i][j] = 1
+    adj_matrix[j][i] = 1
+
+print("Adjacency List:")
+for vertex in vertices:
+    print(f"{vertex}: {adj_list[vertex]}")
+
+print("\nAdjacency Matrix:")
+print("  " + " ".join(vertices))
+for i, vertex in enumerate(vertices):
+    print(vertex, adj_matrix[i])
+
+
+# Breadth First Search using adjacency list
+def bfs(start):
+    visited = set([start])
+    queue = deque([start])
+    order = []
+
+    while queue:
+        vertex = queue.popleft()
+        order.append(vertex)
+
+        for neighbour in adj_list[vertex]:
+            if neighbour not in visited:
+                visited.add(neighbour)
+                queue.append(neighbour)
+
+    return order
+
+
+# Depth First Search using adjacency matrix
+def dfs(start):
+    visited = set()
+    order = []
+
+    def visit(vertex):
+        visited.add(vertex)
+        order.append(vertex)
+
+        row = adj_matrix[index[vertex]]
+        for i, connected in enumerate(row):
+            neighbour = vertices[i]
+
+            if connected == 1 and neighbour not in visited:
+                visit(neighbour)
+
+    visit(start)
+    return order
+
+
+print("\nBFS starting from A:", " -> ".join(bfs('A')))
+print("DFS starting from A:", " -> ".join(dfs('A')))
